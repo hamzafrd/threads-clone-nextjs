@@ -1,19 +1,23 @@
 import AccountProfile from "@/components/forms/AccountProfile";
 import { currentUser } from "@clerk/nextjs";
-import { userInfo } from "os";
 
 async function Page() {
-	const user = await currentUser();
-	const useInfo = {};
-	console.log(user);
+	const userInfo = {
+		// id: null,
+		// username: null
+		// name: "test name",
+		// bio: "test bio",
+		// image: null,
+	};
+	// console.log(`currentUser ${await currentUser()}`);
 
 	const userData = {
-		id: user?.id,
+		id: (await currentUser())?.id,
 		objectId: userInfo?.id,
-		username: userInfo?.username || user?.username,
-		name: userInfo?.name || user?.firstName || "",
+		username: userInfo?.username || (await currentUser())?.username,
+		name: userInfo?.name || (await currentUser())?.firstName || "",
 		bio: userInfo?.bio || "",
-		image: userInfo?.image || user?.imageUrl,
+		image: userInfo?.image || (await currentUser())?.imageUrl,
 	};
 	return (
 		<main
