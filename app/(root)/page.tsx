@@ -5,11 +5,10 @@ import { currentUser } from "@clerk/nextjs";
 export default async function Home() {
 	const result = await fetchPosts(1, 30);
 	const user = await currentUser();
-	console.log(result.posts.length);
 
 	return (
 		<>
-			<h1 className="head-text text-left">Hello Home root</h1>
+			<h1 className="head-text text-left">HomePage</h1>
 
 			<section className="mt-9 flex flex-col gap-10">
 				{result.posts.length === 0 ? (

@@ -3,7 +3,6 @@ import { revalidatePath } from "next/cache";
 import Thread from "../modals/thread.model";
 import User from "../modals/user.model";
 import { connectToDB } from "../mongoose";
-import { fetchUser } from "./user.action";
 
 interface Params {
 	text: string;
@@ -26,7 +25,7 @@ export const createThread = async ({
 			communityId: null,
 		});
 
-		//update user model
+		//update user model, because user have access to thread (of course)
 		await User.findByIdAndUpdate(author, {
 			$push: { threads: createdThread._id },
 		});

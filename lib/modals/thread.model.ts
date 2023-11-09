@@ -33,5 +33,5 @@ export default Thread;
 
 //Thread
 // Thread comments 1
-// Thread comments 2
-// Thread comments 3
+// -> Thread comments 2
+// -->Thread comments 3
