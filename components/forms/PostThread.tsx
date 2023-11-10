@@ -1,5 +1,4 @@
 "use client";
-import { UserValidation } from "@/lib/validation/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -7,36 +6,17 @@ import { Button } from "@/components/ui/button";
 import {
 	Form,
 	FormControl,
-	FormDescription,
 	FormField,
 	FormItem,
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { createThread } from "@/lib/actions/thread.action";
-import updateUser from "@/lib/actions/user.action";
-import { connectToDB } from "@/lib/mongoose";
-import { useUploadThing } from "@/lib/uploadthing";
-import { isBase64Image } from "@/lib/utils";
 import { ThreadValidation } from "@/lib/validation/thread";
-import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { ChangeEvent, useState } from "react";
 import { z } from "zod";
 import { Textarea } from "../ui/textarea";
 
-interface Props {
-	user: {
-		id: string;
-		objectId: string;
-		username: string;
-		name: string;
-		bio: string;
-		image: string;
-	};
-	btnTitle: string;
-}
 function PostThread({ userId }: { userId: string }) {
 	const router = useRouter();
 	const pathName = usePathname();
