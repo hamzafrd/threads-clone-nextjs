@@ -67,8 +67,6 @@ export const fetchPosts = async (pageNumber = 1, pageSize = 20) => {
 	return { posts, isNext };
 };
 
-import React from "react";
-
 export const fetchThreadById = async (id: string) => {
 	connectToDB();
 	try {
@@ -82,12 +80,12 @@ export const fetchThreadById = async (id: string) => {
 			})
 			.populate({
 				path: "children",
-				model: User,
+				// model: User,
 				populate: [
 					{
 						path: "author",
 						model: User,
-						select: "_id id parentId image",
+						select: "_id id name parentId image",
 					},
 					{
 						path: "children",
@@ -105,5 +103,40 @@ export const fetchThreadById = async (id: string) => {
 		return thread;
 	} catch (error: any) {
 		throw new Error(`Error fetching thread : ${error.message}`);
+	}
+};
+
+export const addCommentToThread = async (
+	threadId: string,
+	commentText: string,
+	userId: string,
+	path: string
+) => {
+	connectToDB();
+
+	try {
+		// Adding a comment
+		// find original thread by its id (parent id)
+		const parentThread = await Thread.findById(threadId);
+		if (!parentThread) throw new Error(`Thread parent not found`);
+
+		const commentThread = new Thread({
+			text: commentText,
+			author: userId,
+			parentId: threadId,
+		});
+
+		//save new thread
+		const savedCommentThread = await commentThread.save();
+
+		//update original thread
+		parentThread.children.push(savedCommentThread._id);
+
+		//save parent thread
+		await parentThread.save();
+
+		revalidatePath(path);
+	} catch (error: any) {
+		throw new Error(`Error Adding comment to thread : ${error.message}`);
 	}
 };
