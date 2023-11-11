@@ -1,23 +1,20 @@
 import AccountProfile from "@/components/forms/AccountProfile";
+import { Iuser } from "@/interface";
+import { fetchUser } from "@/lib/actions/user.action";
 import { currentUser } from "@clerk/nextjs";
 
 async function Page() {
-	const userInfo = {
-		// id: null,
-		// username: null
-		// name: "test name",
-		// bio: "test bio",
-		// image: null,
-	};
-	// console.log(`currentUser ${await currentUser()}`);
-
+	const clerkUser = await currentUser();
+	const userDb: Iuser = clerkUser?.id
+		? await fetchUser(clerkUser?.id)
+		: undefined;
 	const userData = {
-		id: (await currentUser())?.id,
-		objectId: userInfo?.id,
-		username: userInfo?.username || (await currentUser())?.username,
-		name: userInfo?.name || (await currentUser())?.firstName || "",
-		bio: userInfo?.bio || "",
-		image: userInfo?.image || (await currentUser())?.imageUrl,
+		id: userDb?.id,
+		objectId: userDb?._id,
+		username: userDb?.username || (await currentUser())?.username,
+		name: userDb?.name || (await currentUser())?.firstName || "",
+		bio: userDb?.bio || "",
+		image: userDb?.image || (await currentUser())?.imageUrl,
 	};
 	return (
 		<main
@@ -30,7 +27,7 @@ async function Page() {
 			</p>
 
 			<section className="mt-9 bg-dark-2 p-10">
-				<AccountProfile user={userData} btnTtitle="Continue" />
+				<AccountProfile user={userData} btnTitle="Continue" />
 			</section>
 		</main>
 	);

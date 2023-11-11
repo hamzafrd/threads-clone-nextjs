@@ -27,10 +27,10 @@ interface Props {
 	user: {
 		id: string;
 		objectId: string;
-		username: string;
+		username?: string | null;
 		name: string;
 		bio: string;
-		image: string;
+		image?: string;
 	};
 	btnTitle: string;
 }
