@@ -1,7 +1,7 @@
 "use server";
 import { revalidatePath } from "next/cache";
-import Thread from "../modals/thread.model";
-import User from "../modals/user.model";
+import Thread from "../models/thread.model";
+import User from "../models/user.model";
 import { connectToDB } from "../mongoose";
 
 interface Params {
@@ -75,12 +75,12 @@ export const fetchThreadById = async (id: string) => {
 		const thread = await Thread.findById(id)
 			.populate({
 				path: "author",
-				model: User,
+				model: User, // optional since Thread ref author to User
 				select: "_id id name image",
 			})
 			.populate({
 				path: "children",
-				// model: User,
+				model: Thread, //optional since Thread ref children to Thread
 				populate: [
 					{
 						path: "author",

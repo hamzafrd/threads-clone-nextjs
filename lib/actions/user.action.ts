@@ -2,8 +2,8 @@
 
 import { FilterQuery, SortOrder } from "mongoose";
 import { revalidatePath } from "next/cache";
-import Thread from "../modals/thread.model";
-import User from "../modals/user.model";
+import Thread from "../models/thread.model";
+import User from "../models/user.model";
 import { connectToDB } from "../mongoose";
 
 interface Params {
@@ -152,9 +152,15 @@ export const getNotification = async (userId: string) => {
 		 => 6 
 		 */
 		const childThreadIds = userThreads.reduce((prevThread, nextThread) => {
+			/**
+			 * [] (prev) | {_id,text,author,children[A{},B{}]} =>
+			 *  => A{},B{} | {_id2,text2,author2,children[C{}]}
+			 *  => A{},B{},C{}
+			 */
 			return prevThread.concat(nextThread.children);
 		}, []);
 
+		//search child (comments/replies) from db
 		const replies = await Thread.find({
 			_id: { $in: childThreadIds },
 			//ne standsfor "not e" (exluding replies from the same user)
