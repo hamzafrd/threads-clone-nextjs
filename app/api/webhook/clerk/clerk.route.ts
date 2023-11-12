@@ -80,6 +80,8 @@ export const POST = async (request: Request) => {
 				created_by
 			);
 
+			console.log("[45m" + "Community Created" + "[0m");
+
 			return NextResponse.json({ message: "User created" }, { status: 201 });
 		} catch (err) {
 			console.log(err);
