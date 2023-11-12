@@ -2,20 +2,22 @@ import AccountProfile from "@/components/forms/AccountProfile";
 import { Iuser } from "@/interface";
 import { fetchUser } from "@/lib/actions/user.action";
 import { currentUser } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 
 async function Page() {
 	const clerkUser = await currentUser();
-	const userDb: Iuser = clerkUser?.id
-		? await fetchUser(clerkUser?.id)
-		: undefined;
+
+	const userDb: Iuser = clerkUser?.id && (await fetchUser(clerkUser?.id));
+
+	if (userDb?.onboarded) redirect("/");
 
 	const userData = {
-		id: clerkUser?.id!!,
-		objectId: userDb?._id,
-		username: userDb?.username || (await currentUser())?.username,
-		name: userDb?.name || (await currentUser())?.firstName || "",
-		bio: userDb?.bio || "",
-		image: userDb?.image || (await currentUser())?.imageUrl,
+		id: (clerkUser && clerkUser.id) || "",
+		objectId: userDb && userDb._id,
+		username: userDb ? userDb.username : clerkUser?.username,
+		name: userDb ? userDb.name : clerkUser?.firstName || "",
+		bio: userDb ? userDb.bio : "",
+		image: userDb ? userDb.image : clerkUser?.imageUrl,
 	};
 
 	return (
