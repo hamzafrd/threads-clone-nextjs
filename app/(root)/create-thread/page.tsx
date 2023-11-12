@@ -15,7 +15,7 @@ const Page = async () => {
 	return (
 		<>
 			<h1 className="head-text">Create Threads</h1>
-			<PostThread userId={userInfo._id} />
+			<PostThread userId={JSON.stringify(userInfo._id)} />
 		</>
 	);
 };

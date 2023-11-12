@@ -13,8 +13,7 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import updateUser from "@/lib/actions/user.action";
-import { connectToDB } from "@/lib/mongoose";
+import { updateUser } from "@/lib/actions/user.action";
 import { useUploadThing } from "@/lib/uploadthing";
 import { isBase64Image } from "@/lib/utils";
 import Image from "next/image";

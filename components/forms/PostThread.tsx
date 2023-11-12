@@ -1,6 +1,5 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -13,7 +12,9 @@ import {
 } from "@/components/ui/form";
 import { createThread } from "@/lib/actions/thread.action";
 import { ThreadValidation } from "@/lib/validation/thread";
+import { useOrganization } from "@clerk/nextjs";
 import { usePathname, useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Textarea } from "../ui/textarea";
 
@@ -21,19 +22,21 @@ function PostThread({ userId }: { userId: string }) {
 	const router = useRouter();
 	const pathName = usePathname();
 
+	const { organization } = useOrganization();
+
 	const form = useForm({
 		resolver: zodResolver(ThreadValidation),
 		defaultValues: {
 			thread: "",
-			accountId: userId,
+			accountId: JSON.parse(userId),
 		},
 	});
 
 	const onSubmit = async (values: z.infer<typeof ThreadValidation>) => {
 		await createThread({
 			text: values.thread,
-			author: userId,
-			communityId: null,
+			author: JSON.parse(userId),
+			communityId: organization ? organization.id : null,
 			path: pathName,
 		});
 
