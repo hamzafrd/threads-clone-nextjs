@@ -1,5 +1,5 @@
 import { Iuser } from "@/interface";
-import { fetchUser, getNotification } from "@/lib/actions/user.action";
+import { fetchUser, getActivity } from "@/lib/actions/user.action";
 import { currentUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,7 +16,7 @@ const Activity = async () => {
 
 	//getActivity/notification
 
-	const activities = await getNotification(userInfo._id);
+	const activities = await getActivity(userInfo._id);
 
 	return (
 		<section>

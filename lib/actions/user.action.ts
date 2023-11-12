@@ -153,7 +153,7 @@ export async function fetchUsers({
 	}
 }
 
-export async function getNotification(userId: string) {
+export async function getActivity(userId: string) {
 	try {
 		connectToDB();
 

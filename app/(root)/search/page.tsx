@@ -1,6 +1,6 @@
 import UsersCard from "@/components/cards/UsersCard";
 import { Iuser } from "@/interface";
-import { fetchAllUser, fetchUser } from "@/lib/actions/user.action";
+import { fetchUser, fetchUsers } from "@/lib/actions/user.action";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
@@ -14,7 +14,7 @@ const Search = async () => {
 	if (!userInfo?.onboarded) redirect("/on-boarding");
 
 	//fetch all other users
-	const result = await fetchAllUser({
+	const result = await fetchUsers({
 		userId: user.id,
 		searchString: "",
 		pageNumber: 1,
